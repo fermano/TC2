@@ -78,8 +78,16 @@ def summarize_signals_for_handoff(
     signals: Iterable[OperationSignal],
     *,
     fallback_owner: str | None = None,
+    min_severity: str | None = None,
 ) -> HandoffSummary:
     signal_list = list(signals)
+    if min_severity is not None:
+        threshold = SEVERITY_RANK.get(min_severity, 0)
+        signal_list = [
+            signal
+            for signal in signal_list
+            if SEVERITY_RANK.get(signal.severity, 0) >= threshold
+        ]
     grouped = group_signals_by_owner(signal_list, fallback_owner=fallback_owner)
 
     return HandoffSummary(
