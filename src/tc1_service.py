@@ -97,6 +97,15 @@ def summarize_signals_for_handoff(
     )
 
 
+def format_handoff_summary(summary: HandoffSummary) -> str:
+    owners = ", ".join(summary.owners) if summary.owners else "none"
+    return (
+        f"{summary.signal_count} signals; "
+        f"highest severity: {summary.highest_severity}; "
+        f"owners: {owners}"
+    )
+
+
 def build_release_marker(version: str, channel: str) -> str:
     timestamp = datetime.now(timezone.utc).strftime(RELEASE_MARKER_TIMESTAMP_FORMAT)
     normalized_channel = OWNER_SLUG_RE.sub("-", channel.strip().lower()).strip("-") or "internal"
