@@ -52,5 +52,7 @@ def extract_release_marker(note: str) -> str:
     marker = note.strip()
     prefix = "release:"
     if marker.lower().startswith(prefix):
-        return marker[len(prefix) :].strip()
+        marker = marker[len(prefix) :].strip()
+        if not marker:
+            raise ValueError("release marker prefix requires a marker value")
     return marker

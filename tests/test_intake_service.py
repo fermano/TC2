@@ -28,3 +28,12 @@ def test_release_marker_trims_surrounding_whitespace() -> None:
 
 def test_release_marker_accepts_prefixed_support_note() -> None:
     assert extract_release_marker("  ReLeAsE: 20260530-rc2  ") == "20260530-rc2"
+
+
+def test_release_marker_rejects_empty_prefixed_note() -> None:
+    try:
+        extract_release_marker(" release:   ")
+    except ValueError as exc:
+        assert "marker value" in str(exc)
+    else:
+        raise AssertionError("empty prefixed marker should be rejected")
