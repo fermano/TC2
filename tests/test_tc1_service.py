@@ -3,8 +3,10 @@ from datetime import datetime, timezone
 import pytest
 
 from src.tc1_service import (
+    HandoffSummary,
     OperationSignal,
     build_release_marker,
+    format_handoff_summary,
     group_signals_by_owner,
     highest_severity,
     normalize_owner,
@@ -120,3 +122,25 @@ def test_group_signals_by_owner_keeps_default_unassigned_path_without_fallback()
     grouped = group_signals_by_owner([signal])
 
     assert grouped == {"unassigned": [signal]}
+
+
+def test_format_handoff_summary_for_release_notes():
+    summary = HandoffSummary(
+        highest_severity="critical",
+        owners=("platform", "release"),
+        signal_count=2,
+    )
+
+    assert (
+        format_handoff_summary(summary)
+        == "2 signals; highest severity: critical; owners: platform, release"
+    )
+
+
+def test_format_handoff_summary_uses_none_for_empty_owners():
+    summary = HandoffSummary(highest_severity="low", owners=(), signal_count=0)
+
+    assert (
+        format_handoff_summary(summary)
+        == "0 signals; highest severity: low; owners: none"
+    )
