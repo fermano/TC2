@@ -28,3 +28,14 @@ def test_min_severity_medium_preserves_input_order():
 def test_unknown_severity_ranks_lowest_and_is_dropped():
     rows = [{"owner": "x", "severity": "bogus", "summary": "s"}]
     assert filter_handoff_rows(rows, min_severity="low") == []
+
+
+def test_unknown_min_severity_is_rejected():
+    rows = [{"owner": "platform", "severity": "high", "summary": "Queue delay"}]
+
+    try:
+        filter_handoff_rows(rows, min_severity="urgent")
+    except ValueError as exc:
+        assert "unknown minimum severity: urgent" in str(exc)
+    else:
+        raise AssertionError("unknown min_severity should be rejected")

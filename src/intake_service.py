@@ -39,6 +39,8 @@ def filter_handoff_rows(
     ordered = list(rows)
     if min_severity is None:
         return ordered
+    if min_severity not in _SEVERITY_RANK:
+        raise ValueError(f"unknown minimum severity: {min_severity}")
     threshold = _SEVERITY_RANK.get(min_severity, 0)
     return [
         row for row in ordered if _SEVERITY_RANK.get(row["severity"], 0) >= threshold
