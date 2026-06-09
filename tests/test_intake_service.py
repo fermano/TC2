@@ -24,3 +24,7 @@ def test_handoff_rows_keep_input_order() -> None:
 
 def test_release_marker_trims_surrounding_whitespace() -> None:
     assert extract_release_marker("  20260530-rc2  ") == "20260530-rc2"
+
+
+def test_release_marker_accepts_prefixed_support_note() -> None:
+    assert extract_release_marker("  ReLeAsE: 20260530-rc2  ") == "20260530-rc2"
