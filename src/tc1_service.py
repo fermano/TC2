@@ -87,6 +87,17 @@ def group_signals_by_owner(
     return grouped
 
 
+def filter_signals_since(
+    signals: Iterable[OperationSignal],
+    cutoff: datetime,
+) -> list[OperationSignal]:
+    """Return signals observed on or after cutoff, preserving input order.
+
+    cutoff must be timezone-aware, matching OperationSignal.observed_at.
+    """
+    return [signal for signal in signals if signal.observed_at >= cutoff]
+
+
 def summarize_signals_for_handoff(
     signals: Iterable[OperationSignal],
     *,
