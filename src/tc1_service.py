@@ -82,7 +82,12 @@ def summarize_signals_for_handoff(
 ) -> HandoffSummary:
     signal_list = list(signals)
     if min_severity is not None:
-        threshold = SEVERITY_RANK.get(min_severity, 0)
+        if min_severity not in SEVERITY_RANK:
+            allowed = ", ".join(SEVERITY_RANK)
+            raise ValueError(
+                f"unknown min_severity {min_severity!r}; expected one of: {allowed}"
+            )
+        threshold = SEVERITY_RANK[min_severity]
         signal_list = [
             signal
             for signal in signal_list
