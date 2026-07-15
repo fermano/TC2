@@ -57,6 +57,19 @@ def highest_severity(signals: Iterable[OperationSignal]) -> str:
     return severity
 
 
+def severity_breakdown(signals: Iterable[OperationSignal]) -> dict[str, int]:
+    """Count signals at each known severity level.
+
+    Unknown severities are ignored (matching highest_severity); the result
+    always contains every level in SEVERITY_RANK so callers never KeyError.
+    """
+    counts = {level: 0 for level in SEVERITY_RANK}
+    for signal in signals:
+        if signal.severity in counts:
+            counts[signal.severity] += 1
+    return counts
+
+
 def group_signals_by_owner(
     signals: Iterable[OperationSignal],
     *,
