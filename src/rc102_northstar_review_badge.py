@@ -2,7 +2,9 @@ DEFAULT_REVIEW_REQUIRED = True
 
 
 def _coerce_flag(value, default):
-    return value or default
+    if value is None:
+        return default
+    return bool(value)
 
 
 def build_badge(payload, lane_defaults):
