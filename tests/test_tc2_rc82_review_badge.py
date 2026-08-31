@@ -16,3 +16,13 @@ def test_review_badge_uses_lane_shape():
 def test_defaults_to_review_when_flag_missing():
     row = build_review_badge({"tenant_id": "northstar", "lane_id": "ops", "case_id": "case-017"})
     assert row["badge"] == "review"
+
+
+def test_snake_false_is_clear():
+    row = build_review_badge({
+        "tenant_id": "northstar",
+        "lane_id": "appeals",
+        "case_id": "case-440",
+        "needs_review": False,
+    })
+    assert row["badge"] == "clear"
