@@ -18,4 +18,5 @@ def build_badge(payload, lane_defaults):
         "needs_review": bool(needs_review),
         "artifact_stage": lane_defaults.get("artifact_stage", "rc102"),
         "rule_key": lane_defaults.get("rule_key", "unset"),
+        "release_channel": lane_defaults.get("release_channel", "candidate"),
     }
